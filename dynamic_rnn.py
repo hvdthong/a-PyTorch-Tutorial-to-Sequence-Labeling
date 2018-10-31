@@ -6,7 +6,7 @@ from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 seqs = torch.LongTensor([[0, 1, 2, 3, 25, 25, 25],
                          [4, 5, 25, 25, 25, 25, 25],
                          [6, 7, 8, 9, 10, 11, 25]])
-
+print(seqs.shape)
 # Store lengths of the actual sequences, ignoring padding
 # These are the points up to which we want the RNN to process the sequence
 seq_lens = torch.LongTensor([4, 2, 6])
@@ -16,7 +16,7 @@ seq_lens, sort_ind = seq_lens.sort(dim=0, descending=True)
 seqs = seqs[sort_ind]
 
 # Create an embedding layer, with 0 vectors for the pads
-embeds = nn.Embedding(26, 10, padding_idx=25)
+embeds = nn.Embedding(26, 10, padding_idx=25)  # 26: vocab, 10: dimensional embeddings
 
 # Create an LSTM layer
 lstm = nn.LSTM(10, 50, bidirectional=False, batch_first=True)
@@ -78,4 +78,3 @@ assert packed_seqs[0].size(0) == sum(seq_lens.tolist())
 print(packed_seqs[1])
 # If you look at the original encoded sequences, you can see this is true
 print(seqs)
-
